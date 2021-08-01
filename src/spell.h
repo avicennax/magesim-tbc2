@@ -6,6 +6,7 @@ namespace spell
         ARCANE_BLAST = 30451,
         ARCANE_MISSILES = 38699,
         FROSTBOLT = 27072,
+        WATERBOLT = 31707,
         FIREBALL = 27070,
         SCORCH = 27074,
         PYROBLAST = 33938,
@@ -101,6 +102,25 @@ namespace spell
             max_dmg = 647;
             cast_time = 3;
             coeff = 3/3.5 * 0.95;
+            school = SCHOOL_FROST;
+            binary = true;
+        }
+
+    };
+
+    class Waterbolt : public Spell
+    {
+
+    public:
+        Waterbolt()
+        {
+            id = WATERBOLT;
+            name = "Waterbolt";
+            cost = 224;
+            min_dmg = 486;
+            max_dmg = 558;
+            cast_time = 2.5;
+            coeff = 1;
             school = SCHOOL_FROST;
             binary = true;
         }

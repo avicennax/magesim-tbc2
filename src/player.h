@@ -283,6 +283,7 @@ public:
                 else if (tree == 2 && t == 17) talents.winters_chill = p;
                 else if (tree == 2 && t == 19) talents.arctic_winds = p;
                 else if (tree == 2 && t == 20) talents.empowered_frostbolt = p;
+                else if (tree == 2 && t == 21) talents.summon_water_elemental = p;
 
                 t++;
             }

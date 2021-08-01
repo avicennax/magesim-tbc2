@@ -29,6 +29,7 @@ struct Talents
     int imp_frostbolt = 0;
     int icy_veins = 0;
     int cold_snap = 0;
+    int summon_water_elemental = 0;
     int ice_shards = 0;
     int piercing_ice = 0;
     int frost_channeling = 0;

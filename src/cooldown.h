@@ -10,6 +10,7 @@ namespace cooldown
         TRINKET2 = 4,
         EVOCATION = 12051,
         COLD_SNAP = 11958,
+        SUMMON_WATER_ELEMENTAL = 31687,
         BERSERKING = 20554,
         ICY_VEINS = 12472,
         COMBUSTION = 29977,
@@ -141,6 +142,19 @@ namespace cooldown
         {
             id = COLD_SNAP;
             duration = 480;
+        }
+
+    };
+
+// 
+    class SummonWaterElemental : public Cooldown
+    {
+
+    public:
+        SummonWaterElemental()
+        {
+            id = SUMMON_WATER_ELEMENTAL;
+            duration = 180;
         }
 
     };

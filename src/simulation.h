@@ -1121,6 +1121,8 @@ public:
             useIcyVeins();
         if (state->t >= config->cold_snap_at && !state->hasCooldown(cooldown::COLD_SNAP) && player->talents.cold_snap)
             useColdSnap();
+        if (state->t >= config->summon_water_elemental_at && !state->hasCooldown(cooldown::SUMMON_WATER_ELEMENTAL) && player->talents.summon_water_elemental)
+            useSummonWaterElemental();
         if (state->t >= config->combustion_at && !state->hasCooldown(cooldown::COMBUSTION) && !state->hasBuff(buff::COMBUSTION) && player->talents.combustion)
             useCombustion();
         if (state->t >= config->berserking_at && !state->hasCooldown(cooldown::BERSERKING) && player->race == RACE_TROLL)
@@ -1279,6 +1281,15 @@ public:
 
         if (player->talents.icy_veins)
             useIcyVeins();
+    }
+
+    void useSummonWaterElemental()
+    {
+        onCooldownGain(make_shared<cooldown::SummonWaterElemental>());
+        onBuffGain(make_shared<buff::WaterElemental>());
+        for (int t = 1; 2.5 * t < 45; t++) {
+            pushCast(make_shared<spell::Waterbolt>(), 2.5 * t);
+        }
     }
 
     void useCombustion()

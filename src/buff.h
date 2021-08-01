@@ -8,6 +8,7 @@ namespace buff
         ARCANE_POWER = 12042,
         PRESENCE_OF_MIND = 12043,
         ICY_VEINS = 12472,
+        WATER_ELEMENTAL = 31687,
         COMBUSTION = 29977,
         BLOODLUST = 2825,
         POWER_INFUSION = 10060,
@@ -139,6 +140,19 @@ namespace buff
             id = ICY_VEINS;
             name = "Icy Veins";
             duration = 20;
+        }
+
+    };
+
+    class WaterElemental : public Buff
+    {
+
+    public:
+        WaterElemental()
+        {
+            id = WATER_ELEMENTAL;
+            name = "Water Elemental";
+            duration = 45;
         }
 
     };

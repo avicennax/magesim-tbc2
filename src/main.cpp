@@ -36,7 +36,18 @@ int main(int argc, char **argv)
 
     shared_ptr<Config> config(new Config());
     shared_ptr<Player> player(new Player(config));
-    player->quickReady();
+    // Frost only
+    if (argc > 3) {
+        std::string talentsString = std::string(argv[3]);
+        printf("Using spec: https://tbc.wowhead.com/talent-calc/mage/%s\n", talentsString.c_str());
+        player->spec = SPEC_FROST;
+        player->loadTalentsFromString(talentsString);
+        player->setDefaultStats();
+        player->setConfigStats();
+    } else {
+        player->quickReady();
+    }
+
     shared_ptr<Simulation> sim(new Simulation(config, player));
 
     if (argc > 1)

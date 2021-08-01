@@ -229,6 +229,7 @@ EMSCRIPTEN_BINDINGS(my_module) {
         .property("symbol_of_hope_at", &Config::symbol_of_hope_at)
         .property("icy_veins_at", &Config::icy_veins_at)
         .property("cold_snap_at", &Config::cold_snap_at)
+        .property("summon_water_elemental_at", &Config::summon_water_elemental_at)
         .property("trinket1_at", &Config::trinket1_at)
         .property("trinket1_reuse_at", &Config::trinket1_reuse_at)
         .property("trinket2_at", &Config::trinket2_at)

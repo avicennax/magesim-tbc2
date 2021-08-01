@@ -766,6 +766,10 @@
                                 <label>Combustion at</label>
                                 <input type="text" v-model.number="config.combustion_at">
                             </div>
+                            <div class="form-item" v-if="hasTalent('summon_water_elemental')">
+                                <label>Summon Water Elemental at</label>
+                                <input type="text" v-model.number="config.summon_water_elemental_at">
+                            </div>
                             <div class="form-item">
                                 <label>
                                     <span>Evocation at</span>
@@ -1202,6 +1206,7 @@
                 symbol_of_hope_at: 0,
                 icy_veins_at: 1,
                 cold_snap_at: 41,
+                summon_water_elemental_at: 1,
                 combustion_at: 1,
                 trinket1_at: 1,
                 trinket1_reuse_at: 0,
@@ -2322,6 +2327,7 @@
                     combustion: [1, 18],
                     icy_veins: [2, 8],
                     cold_snap: [2, 14],
+                    summon_water_elemental: [2, 21]
                 };
 
                 if (!indexes.hasOwnProperty(talent))

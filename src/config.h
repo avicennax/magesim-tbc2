@@ -85,6 +85,7 @@ struct Config
     double symbol_of_hope_at = 0;
     double icy_veins_at = 1;
     double cold_snap_at = 20;
+    double summon_water_elemental_at = 1;
     double trinket1_at = 1;
     double trinket1_reuse_at = 0;
     double trinket2_at = 20;
