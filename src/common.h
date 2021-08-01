@@ -137,7 +137,9 @@ enum Conjured : int
 enum EventType : int
 {
     EVENT_CAST,
+    EVENT_ELEM_CAST,
     EVENT_SPELL,
+    EVENT_ELEM_SPELL,
     EVENT_MANA_REGEN,
     EVENT_MANA_GAIN,
     EVENT_BUFF_GAIN,

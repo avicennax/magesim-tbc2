@@ -203,8 +203,12 @@ public:
 
         if (event->type == EVENT_CAST)
             cast(event->spell);
+        if (event->type == EVENT_ELEM_CAST)
+            elementalCast(event->spell);
         else if (event->type == EVENT_SPELL)
             onCast(event->spell);
+        else if (event->type == EVENT_ELEM_SPELL)
+            onElementalCast(event->spell);
         else if (event->type == EVENT_MANA_REGEN)
             onManaRegen();
         else if (event->type == EVENT_MANA_GAIN)
@@ -245,20 +249,20 @@ public:
         queue.push_back(event);
     }
 
-    void pushCast(shared_ptr<spell::Spell> spell, double t)
+    void pushCast(shared_ptr<spell::Spell> spell, double t, EventType type = EVENT_CAST)
     {
         shared_ptr<Event> event(new Event());
-        event->type = EVENT_CAST;
+        event->type = type;
         event->spell = spell;
         event->t = t;
 
         push(event);
     }
 
-    void pushSpell(shared_ptr<spell::Spell> spell, double t)
+    void pushSpell(shared_ptr<spell::Spell> spell, double t, EventType type = EVENT_SPELL)
     {
         shared_ptr<Event> event(new Event());
-        event->type = EVENT_SPELL;
+        event->type = type;
         event->spell = spell;
         event->t = t;
 
@@ -390,6 +394,14 @@ public:
         addLog(LOG_WAIT, s.str());
     }
 
+    void elementalCast(shared_ptr<spell::Spell> spell) 
+    {
+        if (elementalCanCast(spell)) {
+            // Don't need to check GCD.
+            pushSpell(spell, spell->cast_time, EVENT_ELEM_SPELL);
+        }
+    }
+
     void cast(shared_ptr<spell::Spell> spell)
     {
         if (canCast(spell)) {
@@ -451,6 +463,18 @@ public:
         }
     }
 
+    void onElementalCast(shared_ptr<spell::Spell> spell)
+    {
+        spell->done = true;
+        spell->result = elementalSpellRoll(spell);
+        if (spell->result != spell::MISS) {
+            spell->dmg = spell->avgDmg();
+            if (spell->result == spell::CRIT) 
+                spell->dmg = spell->dmg * 1.5;
+        }
+        logSpellDmg(spell);
+    }
+
     void onCastSuccess(shared_ptr<spell::Spell> spell)
     {
         if (spell->proc)
@@ -485,6 +509,8 @@ public:
         if (hasTrinket(TRINKET_BLUE_DRAGON) && random<int>(0, 49) == 0)
             onBuffGain(make_shared<buff::BlueDragon>());
     }
+
+
 
     void onCastDmg(shared_ptr<spell::Spell> spell)
     {
@@ -1283,12 +1309,20 @@ public:
             useIcyVeins();
     }
 
+    /**
+     * TODO:
+     *  - Add mana dynamics for elemental, i.e: regen, cost.
+     *  - Develop strat for calculating hit, crit, and damage.
+     *  - Make elemental work with cold snap.
+     * 
+     */
     void useSummonWaterElemental()
     {
         onCooldownGain(make_shared<cooldown::SummonWaterElemental>());
+        // Pseudo-buff not doing anything rn - other than log print.
         onBuffGain(make_shared<buff::WaterElemental>());
-        for (int t = 1; 2.5 * t < 45; t++) {
-            pushCast(make_shared<spell::Waterbolt>(), 2.5 * t);
+        for (int t = 0; 2.5 * t < 45; t++) {
+            pushCast(make_shared<spell::Waterbolt>(), 2.5 * t, EVENT_ELEM_CAST);
         }
     }
 
@@ -1372,6 +1406,11 @@ public:
     bool canCast(shared_ptr<spell::Spell> spell)
     {
         return state->mana >= manaCost(spell);
+    }
+
+    /* TODO */
+    bool elementalCanCast(shared_ptr<spell::Spell> spell) {
+        return true;
     }
 
     double manaCost(shared_ptr<spell::Spell> spell, bool ignore_clearcast = false)
@@ -1704,6 +1743,27 @@ public:
             return 0.0;
 
         return spell->dmg * resistance_multiplier;
+    }
+
+    /**
+     * TODO: do some research and derive a strategy to
+     *  estimate hit / crit chance. Bounds below
+     *  rough median quartile estimates.
+     * 
+     * @param spell 
+     * @return spell::Result 
+     */
+    spell::Result elementalSpellRoll(shared_ptr<spell::Spell> spell)
+    {
+        // Seems to be about 11-20% from quick WCL sampling.
+        if (random<double>(0, 100) < 11)
+            return spell::MISS;
+
+        // Seems to be about 15-22% from quick WCL sampling.
+        if (random<double>(0, 100) <= 20)
+            return spell::CRIT;
+
+        return spell::HIT;
     }
 
     spell::Result spellRoll(shared_ptr<spell::Spell> spell)
