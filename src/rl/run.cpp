@@ -21,27 +21,31 @@
 #include "cooldown.h"
 #include "spell.h"
 #include "state.h"
+#include "policy.h"
 #include "player.h"
 #include "simulation.h"
 #include "bindings.h"
+#include "run.h"
 
 using namespace std;
 
-extern "C" int run()
+extern "C" RunResult run(int print)
 {
     int runs = 1;
     bool log_mana = false;
 
     shared_ptr<Config> config(new Config());
     shared_ptr<Player> player(new Player(config));
+    shared_ptr<Policy> policy(new Policy());
     player->quickReady();
-    shared_ptr<Simulation> sim(new Simulation(config, player));
+    shared_ptr<Simulation> sim(new Simulation(config, player, policy));
 
     auto start = chrono::high_resolution_clock::now();
     
     sim->logging = true;
     SimulationResult result = sim->run();
-    sim->printLog();
+    if (print)
+        sim->printLog();
 
     printf("Damage: %d\n", result.dmg);
     printf("DPS: %.2f\n", result.dps);
@@ -50,5 +54,7 @@ extern "C" int run()
     auto duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
     printf("Exec time: %ldms\n", duration.count());
 
-    return 0;
+    RunResult runR {result.dmg, result.dps};
+
+    return runR;
 }
