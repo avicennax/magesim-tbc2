@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = src/main.cpp
+OBJS = src/sim/main.cpp
 
 #CC specifies which compiler we're using
 CC = em++

@@ -24,6 +24,7 @@
 #include "player.h"
 #include "simulation.h"
 #include "bindings.h"
+#include "rl.h"
 
 #ifndef __EMSCRIPTEN__
 
@@ -45,7 +46,7 @@ int main(int argc, char **argv)
         sim->config->duration = atoi(argv[2]);
 
     auto start = chrono::high_resolution_clock::now();
-
+    
     if (runs < 2) {
         sim->logging = true;
         SimulationResult result = sim->run();
