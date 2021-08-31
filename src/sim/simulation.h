@@ -26,11 +26,13 @@ public:
     shared_ptr<State> state;
     shared_ptr<Player> player;
     shared_ptr<Config> config;
+    shared_ptr<Policy> policy;
 
-    Simulation(shared_ptr<Config> _config, shared_ptr<Player> _player)
+    Simulation(shared_ptr<Config> _config, shared_ptr<Player> _player, shared_ptr<Policy> _policy)
     {
         config = _config;
         player = _player;
+        policy = _policy;
         state = make_shared<State>(config);
     }
 
@@ -120,7 +122,7 @@ public:
         return result;
     }
 
-    SimulationResult run()
+    void initRun()
     {
         reset();
 
@@ -160,7 +162,40 @@ public:
                     t+= 12;
             }
         }
+    }
 
+    shared_ptr<spell::Spell> getAction()
+    {
+        shared_ptr<spell::Spell> spell(policy->action());
+        if (!spell) {
+            printf("Using default spell.\n");
+            return nextSpell();
+        }
+        else
+            return spell;
+    }
+
+    shared_ptr<State> step()
+    {
+        cast(getAction());
+
+        shared_ptr<Event> event;
+        event = queue.front();
+        queue.pop_front();
+
+        if (event->t >= state->duration) {
+            state->t = state->duration;
+            return state;
+        }
+
+        tick(event);
+        printLog();
+        return state;
+    }
+
+    SimulationResult run()
+    {
+        initRun();
         cast(nextSpell());
 
         work();

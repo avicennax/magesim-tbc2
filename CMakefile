@@ -14,7 +14,10 @@ clean:
 # Compile all headers for RL
 compile: clean
 	@mkdir -p build/sim
-	$(CC) -fPIC -c src/rl/run.cpp -o build/sim/run.o -I src/sim
+	$(CC) -fPIC -c src/rl/interface.cpp -o build/sim/interface.o -I src/sim
 
 magesim: clean compile
 	python setup.py install
+
+pytest:
+	python tests/interactive/test.py

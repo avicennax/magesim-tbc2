@@ -22,9 +22,9 @@
 #include "spell.h"
 #include "state.h"
 #include "player.h"
+#include "policy.h"
 #include "simulation.h"
 #include "bindings.h"
-#include "rl.h"
 
 #ifndef __EMSCRIPTEN__
 
@@ -37,8 +37,9 @@ int main(int argc, char **argv)
 
     shared_ptr<Config> config(new Config());
     shared_ptr<Player> player(new Player(config));
+    shared_ptr<Policy> policy(new Policy());
     player->quickReady();
-    shared_ptr<Simulation> sim(new Simulation(config, player));
+    shared_ptr<Simulation> sim(new Simulation(config, player, policy));
 
     if (argc > 1)
         runs = atoi(argv[1]);

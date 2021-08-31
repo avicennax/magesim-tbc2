@@ -4,7 +4,7 @@ module = Extension(
     'magesim',
     sources=['src/rl/pybindings.c'],
     include_dirs=["src/sim", "src/rl"],
-    extra_objects=["build/sim/run.o"]
+    extra_objects=["build/sim/interface.o"]
 )
 
 setup(
