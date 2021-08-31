@@ -99,7 +99,7 @@ extern "C" SimState step(const char* name, int action)
     auto n = string(name);
     shared_ptr<Simulation> sim(SIM_MANAGER.getSimulation(n, false));
     
-    shared_ptr<State> state = sim->step();
+    shared_ptr<State> state = sim->step(action);
 
     printf("state->t: %f\n", state->t);
 

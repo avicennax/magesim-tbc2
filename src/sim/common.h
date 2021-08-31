@@ -149,7 +149,8 @@ enum EventType : int
     EVENT_CD_EXPIRE,
     EVENT_VAMPIRIC_TOUCH,
     EVENT_DRUMS,
-    EVENT_WAIT
+    EVENT_WAIT,
+    EVENT_YIELD // Pseudo-event to break out of loop.
 };
 
 enum LogType : int

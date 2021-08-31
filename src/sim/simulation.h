@@ -21,12 +21,13 @@ class Simulation
 
 public:
     bool logging = true;
+    bool yieldCast = false; // RL
     list<shared_ptr<Event>> queue;
     vector<shared_ptr<LogEntry>> log;
     shared_ptr<State> state;
     shared_ptr<Player> player;
     shared_ptr<Config> config;
-    shared_ptr<Policy> policy;
+    shared_ptr<Policy> policy; // RL
 
     Simulation(shared_ptr<Config> _config, shared_ptr<Player> _player, shared_ptr<Policy> _policy)
     {
@@ -164,34 +165,28 @@ public:
         }
     }
 
-    // RL
-    shared_ptr<spell::Spell> getAction()
+    shared_ptr<spell::Spell> getAction(int actionId) // RL
     {
-        shared_ptr<spell::Spell> spell(policy->action());
+        shared_ptr<spell::Spell> spell(policy->action(actionId));
         if (!spell) {
-            printf("Using default spell.\n");
             return nextSpell();
         }
         else
             return spell;
     }
 
-    // RL
-    shared_ptr<State> step()
+    shared_ptr<State> step(int actionId) // RL
     {
-        cast(getAction());
-
-        shared_ptr<Event> event;
-        event = queue.front();
-        queue.pop_front();
-
         if (event->t >= state->duration) {
             state->t = state->duration;
             return state;
         }
-
-        tick(event);
+        yieldCast = true;
+        cast(getAction(actionId));
+        work();
         printLog();
+        yieldCast = false;
+
         return state;
     }
 
@@ -215,7 +210,6 @@ public:
         return result;
     }
 
-
     void work()
     {
         shared_ptr<Event> event;
@@ -223,6 +217,9 @@ public:
         while (true) {
             event = queue.front();
             queue.pop_front();
+
+            if (event->type == EVENT_YIELD && yieldCast == true) // RL
+                return;
 
             if (event->t >= state->duration) {
                 state->t = state->duration;
@@ -428,6 +425,26 @@ public:
         addLog(LOG_WAIT, s.str());
     }
 
+    void pushYield() // RL
+    {
+        shared_ptr<Event> event(new Event());
+        event->type = EVENT_YIELD;
+        event->t = -1;
+
+        ostringstream s;
+        s << "Yielding control back.";
+        addLog(LOG_DEBUG, s.str());
+        push(event);
+    }
+
+    void castOrYield(shared_ptr<spell::Spell> spell) // RL
+    {
+        if (yieldCast)
+            pushYield();
+        else
+            cast(spell);
+    }
+
     void cast(shared_ptr<spell::Spell> spell)
     {
         if (canCast(spell)) {
@@ -484,7 +501,8 @@ public:
                 pushCast(next, 1.0);
             }
             else {
-                cast(next);
+                castOrYield(next); // RL
+                // cast(next);
             }
         }
     }
@@ -747,7 +765,8 @@ public:
             }
         }
 
-        cast(spell);
+        castOrYield(spell); // RL
+        // cast(spell);
     }
 
     void onBuffGain(shared_ptr<buff::Buff> buff)
