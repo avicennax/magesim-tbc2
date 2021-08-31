@@ -177,7 +177,7 @@ public:
 
     shared_ptr<State> step(int actionId) // RL
     {
-        if (event->t >= state->duration) {
+        if (state->t >= state->duration) {
             state->t = state->duration;
             return state;
         }
@@ -445,11 +445,22 @@ public:
             cast(spell);
     }
 
+    void pushCastOrYield(shared_ptr<spell::Spell> spell, double t) // RL
+    {
+        if (yieldCast) {
+            pushWait(t);
+            pushYield();
+        }
+        else {
+            pushCast(spell, t);
+        }
+    }
+
     void cast(shared_ptr<spell::Spell> spell)
     {
         if (canCast(spell)) {
             if (state->t_gcd > state->t) {
-                pushCast(spell, state->t_gcd - state->t);
+                pushCastOrYield(spell, state->t_gcd - state->t); // RL
             }
             else {
                 if (!spell->proc)
@@ -498,7 +509,7 @@ public:
             // Drums 1 sec cast
             if (config->drums && state->t >= config->drums_at && !state->hasCooldown(cooldown::DRUMS) && !config->drums_friend) {
                 useDrums();
-                pushCast(next, 1.0);
+                pushCastOrYield(next, 1.0); // RL
             }
             else {
                 castOrYield(next); // RL

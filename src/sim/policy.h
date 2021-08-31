@@ -1,9 +1,9 @@
 using namespace std;
 
-// enum ActionType {
-//     SPELL,
-//     COOLDOWN
-// };
+enum ActionType {
+    SPELL,
+    COOLDOWN
+};
 
 // union ActionU {
 //     spell::Spell s;
