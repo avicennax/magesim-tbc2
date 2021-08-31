@@ -164,6 +164,7 @@ public:
         }
     }
 
+    // RL
     shared_ptr<spell::Spell> getAction()
     {
         shared_ptr<spell::Spell> spell(policy->action());
@@ -175,6 +176,7 @@ public:
             return spell;
     }
 
+    // RL
     shared_ptr<State> step()
     {
         cast(getAction());
@@ -212,6 +214,7 @@ public:
 
         return result;
     }
+
 
     void work()
     {
