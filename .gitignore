@@ -1,2 +1,7 @@
 node_modules
 magesim
+
+*.egg-info/
+*.egg
+build/
+.vscode/

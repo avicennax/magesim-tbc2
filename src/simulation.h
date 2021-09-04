@@ -1,3 +1,6 @@
+#ifndef SIMULATION_H
+#define SIMULATION_H
+
 using namespace std;
 
 class Event
@@ -26,6 +29,14 @@ public:
     shared_ptr<State> state;
     shared_ptr<Player> player;
     shared_ptr<Config> config;
+
+    Simulation()
+    {
+        config = make_shared<Config>();
+        player = make_shared<Player>(config);
+        player->quickReady();
+        state = make_shared<State>(config);
+    }
 
     Simulation(shared_ptr<Config> _config, shared_ptr<Player> _player)
     {
@@ -120,7 +131,7 @@ public:
         return result;
     }
 
-    SimulationResult run()
+    void boostrapRun()
     {
         reset();
 
@@ -160,8 +171,11 @@ public:
                     t+= 12;
             }
         }
+    }
 
-        cast(nextSpell());
+    SimulationResult run()
+    {
+        boostrapRun();
 
         work();
 
@@ -2061,3 +2075,5 @@ public:
     }
 
 };
+
+#endif

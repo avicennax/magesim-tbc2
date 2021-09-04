@@ -1,0 +1,83 @@
+
+cast() is called 5 times; 4 cases are general, 1 is lighting capacitor.
+- cast(nextSpell()) -- Kick off sim
+- inside tick() -- which is run inside work()
+- inside onCast() -- runs in default case after calc spell dmg.
+- inside onWait()
+
+work() processes the event queue.
+
+(Q) How is GCD handled?
+
+---
+
+onCast() vs cast()
+
+cast()
+ - if gcd up: pushCast()
+ - otherwise use CDs and pushSpell()
+
+onCast()
+  - most cases onCastDmg()
+
+canCast() - checks mana for cast 
+onCastDmg() - calculate spell dmg (hit, crit, etc.)
+
+---
+
+Actions are taken when we push() user determined events
+or use consumables / CDs.
+
+Narrative:
+  - work() loops EQ.
+  - See above for cast() / onCast() overview.
+  - cast(spell) inserts
+
+Happy PATH
+1. We get to cast(), most cases pushSpell()
+  - Either cast() now or process from queue via pushCast()
+2. We process spell event in tick() with onCast()
+3. Inside onCast() calculate damage via onCastDmg()
+4. Still inside onCast() call cast() for next spell
+  - Or if drums are up, use drums and pushCast(next, 1).
+
+This above forms the main cast loop.
+
+Where Actions are taken:
+  - onCast
+    * Check / use drums, cast(next). 
+    - onCastComplete
+      * Check / use gems, pots, innervate and evocate (return next spell).
+  - tick
+    * Primary event processor 
+    - onCast
+  - run
+    * Run sim, push first cast.
+    - cast
+  - onWait
+    * If spell isn't AB, cast otherwise push AB stacks.
+    - cast
+  - fireLightningCapacitor
+    * Weird ass edge case, disregard for now.
+
+
+Action Spells
+  - cast()
+  - pushCast() // cast() in future
+  - useCooldowns()
+  - useTrinkets()
+  - evocate()
+  - innervate()
+  - use_X()
+  - pushBuffGain() // Not all
+
+Select Spell
+  - nextSpell()
+
+---
+
+Perhaps using a dummy "action" event is the proper / easiest way
+to expose action opportunities.
+
+  pushCast() spell is where we decide what
+  damage spell to push.

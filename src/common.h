@@ -1,3 +1,6 @@
+#ifndef COMMON_H
+#define COMMON_H
+
 enum RegenRotation : int
 {
     ROTATION_FB,
@@ -233,3 +236,5 @@ void setRNGSeed(int seed)
 {
     g_rng.seed(seed);
 }
+
+#endif

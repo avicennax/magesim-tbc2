@@ -12,6 +12,8 @@ public:
     Race race = RACE_UNDEAD;
     Spec spec = SPEC_ARCANE;
 
+    Player() {}
+
     Player(shared_ptr<Config> _config)
     {
         config = _config;
