@@ -1,4 +1,4 @@
-from testsim.simulation import Sim
+from magesim.simulation import Sim
 import faulthandler
 
 faulthandler.enable()

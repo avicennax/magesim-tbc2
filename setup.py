@@ -7,7 +7,7 @@ setup(
     ext_modules=cythonize(
         Extension(
             "*",
-            ["src/testsim/simulation.pyx"],
+            ["src/magesim/simulation.pyx"],
             language="c++",
             extra_compile_args=["-std=c++11"],
             extra_link_args=["-std=c++11"]

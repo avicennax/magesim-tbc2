@@ -19,5 +19,5 @@ clean:
 cython: clean
 	python setup.py install
 
-segfault:
+test_init:
 	python test/init_python_sim.py

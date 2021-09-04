@@ -176,7 +176,7 @@ public:
     SimulationResult run()
     {
         boostrapRun();
-
+        cast(nextSpell());
         work();
 
         SimulationResult result;
