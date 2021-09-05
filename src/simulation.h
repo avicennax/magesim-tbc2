@@ -52,6 +52,53 @@ public:
         state->mana = player->maxMana();
     }
 
+    void boostrapRun()
+    {
+        reset();
+
+        pushManaRegen();
+
+        if (config->vampiric_touch)
+            pushVampiricTouch(config->vampiric_touch_regen);
+        if (config->bloodlust)
+            pushBuffGain(make_shared<buff::Bloodlust>(), config->bloodlust_at);
+        if (config->power_infusion)
+            pushPowerInfusion(config->power_infusion_at);
+        if (config->mana_tide)
+            pushBuffGain(make_shared<buff::ManaTide>(), config->mana_tide_at);
+        if (config->innervate && config->innervate_at)
+            pushInnervate(config->innervate_at);
+        if (config->drums && config->drums_friend) {
+            for (double t = config->drums_at; t<state->duration; t+= 120)
+                pushDrums(t);
+        }
+
+        if (config->fire_vulnerability) {
+            for (double t=1.5; t<state->duration;) {
+                pushDebuffGain(make_shared<debuff::FireVulnerability>(), t);
+                if (t < 7.5)
+                    t+= 1.5;
+                else
+                    t+= 25;
+            }
+        }
+
+        if (config->winters_chill) {
+            for (double t=2.5; t<state->duration;) {
+                pushDebuffGain(make_shared<debuff::WintersChill>(), t);
+                if (t < 12.5)
+                    t+= 2.5;
+                else
+                    t+= 12;
+            }
+        }
+    }
+
+    void step()
+    {
+
+    }
+
     SimulationsResult runMultiple(int iterations)
     {
         SimulationResult r;
@@ -129,48 +176,6 @@ public:
         result.stats = ss.str();
 
         return result;
-    }
-
-    void boostrapRun()
-    {
-        reset();
-
-        pushManaRegen();
-
-        if (config->vampiric_touch)
-            pushVampiricTouch(config->vampiric_touch_regen);
-        if (config->bloodlust)
-            pushBuffGain(make_shared<buff::Bloodlust>(), config->bloodlust_at);
-        if (config->power_infusion)
-            pushPowerInfusion(config->power_infusion_at);
-        if (config->mana_tide)
-            pushBuffGain(make_shared<buff::ManaTide>(), config->mana_tide_at);
-        if (config->innervate && config->innervate_at)
-            pushInnervate(config->innervate_at);
-        if (config->drums && config->drums_friend) {
-            for (double t = config->drums_at; t<state->duration; t+= 120)
-                pushDrums(t);
-        }
-
-        if (config->fire_vulnerability) {
-            for (double t=1.5; t<state->duration;) {
-                pushDebuffGain(make_shared<debuff::FireVulnerability>(), t);
-                if (t < 7.5)
-                    t+= 1.5;
-                else
-                    t+= 25;
-            }
-        }
-
-        if (config->winters_chill) {
-            for (double t=2.5; t<state->duration;) {
-                pushDebuffGain(make_shared<debuff::WintersChill>(), t);
-                if (t < 12.5)
-                    t+= 2.5;
-                else
-                    t+= 12;
-            }
-        }
     }
 
     SimulationResult run()
