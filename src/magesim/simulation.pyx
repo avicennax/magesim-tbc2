@@ -1,6 +1,6 @@
 # distutils: language = c++
 
-from testsim.simulation cimport Simulation 
+from magesim.simulation cimport Simulation 
 from libcpp.memory cimport shared_ptr, make_shared
 from cython.operator cimport dereference as deref
 

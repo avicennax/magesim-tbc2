@@ -5,8 +5,8 @@
     "distutils": {
         "depends": [
             "src/common.h",
-            "src/simulation.h",
-            "src/testsim/imports.h"
+            "src/magesim/imports.h",
+            "src/simulation.h"
         ],
         "extra_compile_args": [
             "-std=c++11"
@@ -15,15 +15,15 @@
             "-std=c++11"
         ],
         "include_dirs": [
-            "src/testsim"
+            "src/magesim"
         ],
         "language": "c++",
-        "name": "testsim.simulation",
+        "name": "magesim.simulation",
         "sources": [
-            "src/testsim/simulation.pyx"
+            "src/magesim/simulation.pyx"
         ]
     },
-    "module_name": "testsim.simulation"
+    "module_name": "magesim.simulation"
 }
 END: Cython Metadata */
 
@@ -653,8 +653,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__testsim__simulation
-#define __PYX_HAVE_API__testsim__simulation
+#define __PYX_HAVE__magesim__simulation
+#define __PYX_HAVE_API__magesim__simulation
 /* Early includes */
 #include "ios"
 #include "new"
@@ -875,20 +875,20 @@ static const char *__pyx_filename;
 
 static const char *__pyx_f[] = {
   "stringsource",
-  "src/testsim/simulation.pyx",
+  "src/magesim/simulation.pyx",
 };
 
 /*--- Type declarations ---*/
-struct __pyx_obj_7testsim_10simulation_Sim;
+struct __pyx_obj_7magesim_10simulation_Sim;
 
-/* "testsim/simulation.pyx":7
+/* "magesim/simulation.pyx":7
  * from cython.operator cimport dereference as deref
  * 
  * cdef class Sim:             # <<<<<<<<<<<<<<
  *     cdef Simulation sim
  * 
  */
-struct __pyx_obj_7testsim_10simulation_Sim {
+struct __pyx_obj_7magesim_10simulation_Sim {
   PyObject_HEAD
   Simulation sim;
 };
@@ -1192,18 +1192,18 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'libcpp.string' */
 
-/* Module declarations from 'testsim.simulation' */
-static PyTypeObject *__pyx_ptype_7testsim_10simulation_Sim = 0;
+/* Module declarations from 'magesim.simulation' */
+static PyTypeObject *__pyx_ptype_7magesim_10simulation_Sim = 0;
 static CYTHON_INLINE PyObject *__pyx_convert_PyObject_string_to_py_std__in_string(std::string const &); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_convert_PyUnicode_string_to_py_std__in_string(std::string const &); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_convert_PyStr_string_to_py_std__in_string(std::string const &); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_convert_PyBytes_string_to_py_std__in_string(std::string const &); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_convert_PyByteArray_string_to_py_std__in_string(std::string const &); /*proto*/
-#define __Pyx_MODULE_NAME "testsim.simulation"
-extern int __pyx_module_is_main_testsim__simulation;
-int __pyx_module_is_main_testsim__simulation = 0;
+#define __Pyx_MODULE_NAME "magesim.simulation"
+extern int __pyx_module_is_main_magesim__simulation;
+int __pyx_module_is_main_magesim__simulation = 0;
 
-/* Implementation of 'testsim.simulation' */
+/* Implementation of 'magesim.simulation' */
 static PyObject *__pyx_builtin_TypeError;
 static const char __pyx_k_t[] = "t";
 static const char __pyx_k_Sim[] = "Sim";
@@ -1243,18 +1243,18 @@ static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_n_s_t;
 static PyObject *__pyx_n_s_test;
-static int __pyx_pf_7testsim_10simulation_3Sim___cinit__(struct __pyx_obj_7testsim_10simulation_Sim *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7testsim_10simulation_3Sim_2run(struct __pyx_obj_7testsim_10simulation_Sim *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7testsim_10simulation_3Sim_4print_log(struct __pyx_obj_7testsim_10simulation_Sim *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7testsim_10simulation_3Sim_6step(CYTHON_UNUSED struct __pyx_obj_7testsim_10simulation_Sim *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7testsim_10simulation_3Sim_8__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_7testsim_10simulation_Sim *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7testsim_10simulation_3Sim_10__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7testsim_10simulation_Sim *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_tp_new_7testsim_10simulation_Sim(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static int __pyx_pf_7magesim_10simulation_3Sim___cinit__(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_2run(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_4print_log(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_6step(CYTHON_UNUSED struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_8__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_10__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_tp_new_7magesim_10simulation_Sim(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tuple_;
 static PyObject *__pyx_tuple__2;
 /* Late includes */
 
-/* "testsim/simulation.pyx":10
+/* "magesim/simulation.pyx":10
  *     cdef Simulation sim
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -1263,22 +1263,22 @@ static PyObject *__pyx_tuple__2;
  */
 
 /* Python wrapper */
-static int __pyx_pw_7testsim_10simulation_3Sim_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_7testsim_10simulation_3Sim_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static int __pyx_pw_7magesim_10simulation_3Sim_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_7magesim_10simulation_3Sim_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__ (wrapper)", 0);
   if (unlikely(PyTuple_GET_SIZE(__pyx_args) > 0)) {
     __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 0, 0, PyTuple_GET_SIZE(__pyx_args)); return -1;}
   if (unlikely(__pyx_kwds) && unlikely(PyDict_Size(__pyx_kwds) > 0) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__cinit__", 0))) return -1;
-  __pyx_r = __pyx_pf_7testsim_10simulation_3Sim___cinit__(((struct __pyx_obj_7testsim_10simulation_Sim *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim___cinit__(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_7testsim_10simulation_3Sim___cinit__(struct __pyx_obj_7testsim_10simulation_Sim *__pyx_v_self) {
+static int __pyx_pf_7magesim_10simulation_3Sim___cinit__(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   Simulation __pyx_t_1;
@@ -1287,7 +1287,7 @@ static int __pyx_pf_7testsim_10simulation_3Sim___cinit__(struct __pyx_obj_7tests
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "testsim/simulation.pyx":11
+  /* "magesim/simulation.pyx":11
  * 
  *     def __cinit__(self):
  *         self.sim = Simulation()             # <<<<<<<<<<<<<<
@@ -1302,7 +1302,7 @@ static int __pyx_pf_7testsim_10simulation_3Sim___cinit__(struct __pyx_obj_7tests
   }
   __pyx_v_self->sim = __pyx_t_1;
 
-  /* "testsim/simulation.pyx":10
+  /* "magesim/simulation.pyx":10
  *     cdef Simulation sim
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -1314,14 +1314,14 @@ static int __pyx_pf_7testsim_10simulation_3Sim___cinit__(struct __pyx_obj_7tests
   __pyx_r = 0;
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_AddTraceback("testsim.simulation.Sim.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("magesim.simulation.Sim.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "testsim/simulation.pyx":13
+/* "magesim/simulation.pyx":13
  *         self.sim = Simulation()
  * 
  *     def run(self):             # <<<<<<<<<<<<<<
@@ -1330,19 +1330,19 @@ static int __pyx_pf_7testsim_10simulation_3Sim___cinit__(struct __pyx_obj_7tests
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7testsim_10simulation_3Sim_3run(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_7testsim_10simulation_3Sim_3run(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_3run(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_3run(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("run (wrapper)", 0);
-  __pyx_r = __pyx_pf_7testsim_10simulation_3Sim_2run(((struct __pyx_obj_7testsim_10simulation_Sim *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_2run(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7testsim_10simulation_3Sim_2run(struct __pyx_obj_7testsim_10simulation_Sim *__pyx_v_self) {
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_2run(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1351,7 +1351,7 @@ static PyObject *__pyx_pf_7testsim_10simulation_3Sim_2run(struct __pyx_obj_7test
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("run", 0);
 
-  /* "testsim/simulation.pyx":14
+  /* "magesim/simulation.pyx":14
  * 
  *     def run(self):
  *         return self.sim.run()             # <<<<<<<<<<<<<<
@@ -1365,7 +1365,7 @@ static PyObject *__pyx_pf_7testsim_10simulation_3Sim_2run(struct __pyx_obj_7test
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "testsim/simulation.pyx":13
+  /* "magesim/simulation.pyx":13
  *         self.sim = Simulation()
  * 
  *     def run(self):             # <<<<<<<<<<<<<<
@@ -1376,7 +1376,7 @@ static PyObject *__pyx_pf_7testsim_10simulation_3Sim_2run(struct __pyx_obj_7test
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("testsim.simulation.Sim.run", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("magesim.simulation.Sim.run", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1384,7 +1384,7 @@ static PyObject *__pyx_pf_7testsim_10simulation_3Sim_2run(struct __pyx_obj_7test
   return __pyx_r;
 }
 
-/* "testsim/simulation.pyx":16
+/* "magesim/simulation.pyx":16
  *         return self.sim.run()
  * 
  *     def print_log(self):             # <<<<<<<<<<<<<<
@@ -1393,24 +1393,24 @@ static PyObject *__pyx_pf_7testsim_10simulation_3Sim_2run(struct __pyx_obj_7test
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7testsim_10simulation_3Sim_5print_log(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_7testsim_10simulation_3Sim_5print_log(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_5print_log(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_5print_log(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("print_log (wrapper)", 0);
-  __pyx_r = __pyx_pf_7testsim_10simulation_3Sim_4print_log(((struct __pyx_obj_7testsim_10simulation_Sim *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_4print_log(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7testsim_10simulation_3Sim_4print_log(struct __pyx_obj_7testsim_10simulation_Sim *__pyx_v_self) {
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_4print_log(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("print_log", 0);
 
-  /* "testsim/simulation.pyx":17
+  /* "magesim/simulation.pyx":17
  * 
  *     def print_log(self):
  *         self.sim.printLog()             # <<<<<<<<<<<<<<
@@ -1419,7 +1419,7 @@ static PyObject *__pyx_pf_7testsim_10simulation_3Sim_4print_log(struct __pyx_obj
  */
   (void)(__pyx_v_self->sim.printLog());
 
-  /* "testsim/simulation.pyx":16
+  /* "magesim/simulation.pyx":16
  *         return self.sim.run()
  * 
  *     def print_log(self):             # <<<<<<<<<<<<<<
@@ -1434,7 +1434,7 @@ static PyObject *__pyx_pf_7testsim_10simulation_3Sim_4print_log(struct __pyx_obj
   return __pyx_r;
 }
 
-/* "testsim/simulation.pyx":19
+/* "magesim/simulation.pyx":19
  *         self.sim.printLog()
  * 
  *     def step(self):             # <<<<<<<<<<<<<<
@@ -1442,19 +1442,19 @@ static PyObject *__pyx_pf_7testsim_10simulation_3Sim_4print_log(struct __pyx_obj
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7testsim_10simulation_3Sim_7step(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_7testsim_10simulation_3Sim_7step(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_7step(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_7step(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("step (wrapper)", 0);
-  __pyx_r = __pyx_pf_7testsim_10simulation_3Sim_6step(((struct __pyx_obj_7testsim_10simulation_Sim *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_6step(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7testsim_10simulation_3Sim_6step(CYTHON_UNUSED struct __pyx_obj_7testsim_10simulation_Sim *__pyx_v_self) {
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_6step(CYTHON_UNUSED struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("step", 0);
@@ -1473,19 +1473,19 @@ static PyObject *__pyx_pf_7testsim_10simulation_3Sim_6step(CYTHON_UNUSED struct 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7testsim_10simulation_3Sim_9__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_7testsim_10simulation_3Sim_9__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_9__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_9__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_7testsim_10simulation_3Sim_8__reduce_cython__(((struct __pyx_obj_7testsim_10simulation_Sim *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_8__reduce_cython__(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7testsim_10simulation_3Sim_8__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_7testsim_10simulation_Sim *__pyx_v_self) {
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_8__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1515,7 +1515,7 @@ static PyObject *__pyx_pf_7testsim_10simulation_3Sim_8__reduce_cython__(CYTHON_U
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("testsim.simulation.Sim.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("magesim.simulation.Sim.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -1530,19 +1530,19 @@ static PyObject *__pyx_pf_7testsim_10simulation_3Sim_8__reduce_cython__(CYTHON_U
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7testsim_10simulation_3Sim_11__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_7testsim_10simulation_3Sim_11__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_11__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_11__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_7testsim_10simulation_3Sim_10__setstate_cython__(((struct __pyx_obj_7testsim_10simulation_Sim *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_10__setstate_cython__(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7testsim_10simulation_3Sim_10__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7testsim_10simulation_Sim *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_10__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1572,7 +1572,7 @@ static PyObject *__pyx_pf_7testsim_10simulation_3Sim_10__setstate_cython__(CYTHO
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("testsim.simulation.Sim.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("magesim.simulation.Sim.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -1828,8 +1828,8 @@ static CYTHON_INLINE PyObject *__pyx_convert_PyByteArray_string_to_py_std__in_st
   return __pyx_r;
 }
 
-static PyObject *__pyx_tp_new_7testsim_10simulation_Sim(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  struct __pyx_obj_7testsim_10simulation_Sim *p;
+static PyObject *__pyx_tp_new_7magesim_10simulation_Sim(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_7magesim_10simulation_Sim *p;
   PyObject *o;
   if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
     o = (*t->tp_alloc)(t, 0);
@@ -1837,17 +1837,17 @@ static PyObject *__pyx_tp_new_7testsim_10simulation_Sim(PyTypeObject *t, CYTHON_
     o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
   }
   if (unlikely(!o)) return 0;
-  p = ((struct __pyx_obj_7testsim_10simulation_Sim *)o);
+  p = ((struct __pyx_obj_7magesim_10simulation_Sim *)o);
   new((void*)&(p->sim)) Simulation();
-  if (unlikely(__pyx_pw_7testsim_10simulation_3Sim_1__cinit__(o, __pyx_empty_tuple, NULL) < 0)) goto bad;
+  if (unlikely(__pyx_pw_7magesim_10simulation_3Sim_1__cinit__(o, __pyx_empty_tuple, NULL) < 0)) goto bad;
   return o;
   bad:
   Py_DECREF(o); o = 0;
   return NULL;
 }
 
-static void __pyx_tp_dealloc_7testsim_10simulation_Sim(PyObject *o) {
-  struct __pyx_obj_7testsim_10simulation_Sim *p = (struct __pyx_obj_7testsim_10simulation_Sim *)o;
+static void __pyx_tp_dealloc_7magesim_10simulation_Sim(PyObject *o) {
+  struct __pyx_obj_7magesim_10simulation_Sim *p = (struct __pyx_obj_7magesim_10simulation_Sim *)o;
   #if CYTHON_USE_TP_FINALIZE
   if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && (!PyType_IS_GC(Py_TYPE(o)) || !_PyGC_FINALIZED(o))) {
     if (PyObject_CallFinalizerFromDealloc(o)) return;
@@ -1857,21 +1857,21 @@ static void __pyx_tp_dealloc_7testsim_10simulation_Sim(PyObject *o) {
   (*Py_TYPE(o)->tp_free)(o);
 }
 
-static PyMethodDef __pyx_methods_7testsim_10simulation_Sim[] = {
-  {"run", (PyCFunction)__pyx_pw_7testsim_10simulation_3Sim_3run, METH_NOARGS, 0},
-  {"print_log", (PyCFunction)__pyx_pw_7testsim_10simulation_3Sim_5print_log, METH_NOARGS, 0},
-  {"step", (PyCFunction)__pyx_pw_7testsim_10simulation_3Sim_7step, METH_NOARGS, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_7testsim_10simulation_3Sim_9__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_7testsim_10simulation_3Sim_11__setstate_cython__, METH_O, 0},
+static PyMethodDef __pyx_methods_7magesim_10simulation_Sim[] = {
+  {"run", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_3run, METH_NOARGS, 0},
+  {"print_log", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_5print_log, METH_NOARGS, 0},
+  {"step", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_7step, METH_NOARGS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_9__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_11__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
-static PyTypeObject __pyx_type_7testsim_10simulation_Sim = {
+static PyTypeObject __pyx_type_7magesim_10simulation_Sim = {
   PyVarObject_HEAD_INIT(0, 0)
-  "testsim.simulation.Sim", /*tp_name*/
-  sizeof(struct __pyx_obj_7testsim_10simulation_Sim), /*tp_basicsize*/
+  "magesim.simulation.Sim", /*tp_name*/
+  sizeof(struct __pyx_obj_7magesim_10simulation_Sim), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_7testsim_10simulation_Sim, /*tp_dealloc*/
+  __pyx_tp_dealloc_7magesim_10simulation_Sim, /*tp_dealloc*/
   #if PY_VERSION_HEX < 0x030800b4
   0, /*tp_print*/
   #endif
@@ -1904,7 +1904,7 @@ static PyTypeObject __pyx_type_7testsim_10simulation_Sim = {
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_7testsim_10simulation_Sim, /*tp_methods*/
+  __pyx_methods_7magesim_10simulation_Sim, /*tp_methods*/
   0, /*tp_members*/
   0, /*tp_getset*/
   0, /*tp_base*/
@@ -1914,7 +1914,7 @@ static PyTypeObject __pyx_type_7testsim_10simulation_Sim = {
   0, /*tp_dictoffset*/
   0, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_7testsim_10simulation_Sim, /*tp_new*/
+  __pyx_tp_new_7magesim_10simulation_Sim, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -2084,16 +2084,16 @@ static int __Pyx_modinit_type_init_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_7testsim_10simulation_Sim) < 0) __PYX_ERR(1, 7, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7magesim_10simulation_Sim) < 0) __PYX_ERR(1, 7, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
-  __pyx_type_7testsim_10simulation_Sim.tp_print = 0;
+  __pyx_type_7magesim_10simulation_Sim.tp_print = 0;
   #endif
-  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7testsim_10simulation_Sim.tp_dictoffset && __pyx_type_7testsim_10simulation_Sim.tp_getattro == PyObject_GenericGetAttr)) {
-    __pyx_type_7testsim_10simulation_Sim.tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7magesim_10simulation_Sim.tp_dictoffset && __pyx_type_7magesim_10simulation_Sim.tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_type_7magesim_10simulation_Sim.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Sim, (PyObject *)&__pyx_type_7testsim_10simulation_Sim) < 0) __PYX_ERR(1, 7, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7testsim_10simulation_Sim) < 0) __PYX_ERR(1, 7, __pyx_L1_error)
-  __pyx_ptype_7testsim_10simulation_Sim = &__pyx_type_7testsim_10simulation_Sim;
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Sim, (PyObject *)&__pyx_type_7magesim_10simulation_Sim) < 0) __PYX_ERR(1, 7, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7magesim_10simulation_Sim) < 0) __PYX_ERR(1, 7, __pyx_L1_error)
+  __pyx_ptype_7magesim_10simulation_Sim = &__pyx_type_7magesim_10simulation_Sim;
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -2297,14 +2297,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_testsim__simulation) {
+  if (__pyx_module_is_main_magesim__simulation) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(1, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "testsim.simulation")) {
-      if (unlikely(PyDict_SetItemString(modules, "testsim.simulation", __pyx_m) < 0)) __PYX_ERR(1, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "magesim.simulation")) {
+      if (unlikely(PyDict_SetItemString(modules, "magesim.simulation", __pyx_m) < 0)) __PYX_ERR(1, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -2325,10 +2325,10 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #endif
 
-  /* "testsim/simulation.pyx":1
+  /* "magesim/simulation.pyx":1
  * # distutils: language = c++             # <<<<<<<<<<<<<<
  * 
- * from testsim.simulation cimport Simulation
+ * from magesim.simulation cimport Simulation
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -2350,11 +2350,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init testsim.simulation", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init magesim.simulation", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init testsim.simulation");
+    PyErr_SetString(PyExc_ImportError, "init magesim.simulation");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
