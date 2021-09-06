@@ -132,7 +132,6 @@ public:
     {
         env::State s;
         if (state->t >= state->duration) {
-            state->t = state->duration;
             prepareEnvState(&s);
             return s;
         }
