@@ -1608,7 +1608,7 @@ static PyObject *__pyx_pf_7magesim_10simulation_3Sim_8print_log(struct __pyx_obj
  *         self.sim.printLog()
  * 
  *     def reset(self):             # <<<<<<<<<<<<<<
- *         self.sim.reset()
+ *         return self.sim.envReset()
  * 
  */
 
@@ -1628,34 +1628,47 @@ static PyObject *__pyx_pw_7magesim_10simulation_3Sim_11reset(PyObject *__pyx_v_s
 static PyObject *__pyx_pf_7magesim_10simulation_3Sim_10reset(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("reset", 0);
 
   /* "magesim/simulation.pyx":29
  * 
  *     def reset(self):
- *         self.sim.reset()             # <<<<<<<<<<<<<<
+ *         return self.sim.envReset()             # <<<<<<<<<<<<<<
  * 
  *     def seed(self, _seed):
  */
-  __pyx_v_self->sim.reset();
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_convert__to_py_struct__env_3a__3a_State(__pyx_v_self->sim.envReset()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 29, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
 
   /* "magesim/simulation.pyx":28
  *         self.sim.printLog()
  * 
  *     def reset(self):             # <<<<<<<<<<<<<<
- *         self.sim.reset()
+ *         return self.sim.envReset()
  * 
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("magesim.simulation.Sim.reset", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
 /* "magesim/simulation.pyx":31
- *         self.sim.reset()
+ *         return self.sim.envReset()
  * 
  *     def seed(self, _seed):             # <<<<<<<<<<<<<<
  *         setRNGSeed(_seed)
@@ -1702,7 +1715,7 @@ static PyObject *__pyx_pf_7magesim_10simulation_3Sim_12seed(struct __pyx_obj_7ma
   __pyx_v_self->_seed = __pyx_t_1;
 
   /* "magesim/simulation.pyx":31
- *         self.sim.reset()
+ *         return self.sim.envReset()
  * 
  *     def seed(self, _seed):             # <<<<<<<<<<<<<<
  *         setRNGSeed(_seed)

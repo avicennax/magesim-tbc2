@@ -1,0 +1,12 @@
+name: magesim
+dependencies:
+  - python=3.6
+  - pip
+  - numpy
+  - jupyter
+  - cython
+  - pytest
+  - pip:
+    - python-dummy
+    # Remote installation only installs dependencies
+    # Follow: https://spinningup.openai.com/en/latest/user/installation.html

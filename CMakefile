@@ -14,7 +14,8 @@ clean:
 
 .PHONY=cython
 cython: clean
-	python setup.py install
+	# python setup.py install -e
+	pip install -e .
 
 .PHONY=test_sim_run
 test_sim_run:

@@ -56,6 +56,14 @@ public:
         state->mana = player->maxMana();
     }
 
+    env::State envReset()
+    {
+        reset();
+        env::State s;
+        prepareEnvState(&s);
+        return s;
+    }
+
     void bootstrapRun()
     {
         reset();

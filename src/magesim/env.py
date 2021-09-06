@@ -1,7 +1,7 @@
 """OpenAI Gym Wrapper around TBC MageSim"""
 from collections import namedtuple
 import sys
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 
 import gym
 from gym import spaces
@@ -39,6 +39,8 @@ class MageSimEnv(gym.Env):
 
     metadata = {'render.modes': ['human']}
     ACTION_SPACE_SIZE = 6
+    SPEC_NAME = "magesim"
+    VERSION = "0"
 
     _ACTION_SAMPLE_TO_ID_MAP = {
         i: action_id for i, action_id in enumerate(
@@ -46,15 +48,17 @@ class MageSimEnv(gym.Env):
         )
     }
 
-    def __init__(self):
-        self.action_space = spaces.Discrete(self.ACTION_SPACE_SIZE)
-        # Consider using space.Dict -- need to determine
-        # if Spinning Up algorithms will play nice.
-        self.observation_space = spaces.Tuple(
-            [spaces.Box(-np.inf, np.inf, shape=()) for _ in range(4)] + \
-            [spaces.Box(-sys.maxsize, sys.maxsize, shape=(), dtype=np.int64) for _ in range(4)]
-        )
+    action_space = spaces.Discrete(ACTION_SPACE_SIZE)
+    # Consider using space.Dict -- need to determine
+    # if Spinning Up algorithms will play nice.
+    observation_space = spaces.Tuple(
+        [spaces.Box(-np.inf, np.inf, shape=(), dtype=np.float32) for _ in range(4)] + \
+        [spaces.Box(-sys.maxsize, sys.maxsize, shape=(), dtype=np.int64) for _ in range(4)]
+    )
+    # Tuple space needs have size manually set.
+    observation_space.shape = (len(observation_space),)
 
+    def __init__(self):
         # Initialize underlying simulation
         self.sim = Sim()
         self.sim.bootstrap()
@@ -64,7 +68,8 @@ class MageSimEnv(gym.Env):
         self.t = 0
 
     def step(self, action: int):
-        action_id = self._ACTION_SAMPLE_TO_ID_MAP[action]
+        # Call int incase action is a 1D ndarray.
+        action_id = self._ACTION_SAMPLE_TO_ID_MAP[int(action)]
         
         state = self.sim.step(action_id)
         r = self._get_step_response(state)
@@ -72,8 +77,8 @@ class MageSimEnv(gym.Env):
 
         return tuple(r)
 
-    def reset(self):
-        self.sim.reset()
+    def reset(self) -> Tuple:
+        return self._get_step_response(self.sim.reset()).observation
 
     def render(self, mode='human'):
         self.sim.print_log()

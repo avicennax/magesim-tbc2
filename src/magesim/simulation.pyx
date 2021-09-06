@@ -26,7 +26,7 @@ cdef class Sim:
         self.sim.printLog()
 
     def reset(self):
-        self.sim.reset()
+        return self.sim.envReset()
 
     def seed(self, _seed):
         setRNGSeed(_seed)

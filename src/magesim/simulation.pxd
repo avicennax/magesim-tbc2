@@ -32,7 +32,7 @@ cdef extern from "../simulation.h":
     cdef cppclass Simulation:
         Simulation() except +
         void bootstrapRun()
-        void reset()
+        State envReset()
         SimulationResult run()
         State step(int)
         bool printLog()
