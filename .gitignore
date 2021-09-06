@@ -5,3 +5,5 @@ node_modules
 *.egg
 build/
 .vscode/
+*.so
+__pycache__
