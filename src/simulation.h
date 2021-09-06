@@ -24,15 +24,18 @@ class Simulation
 
 public:
     bool logging = true;
+    bool yieldCast = false; // RL
     list<shared_ptr<Event>> queue;
     vector<shared_ptr<LogEntry>> log;
     shared_ptr<State> state;
     shared_ptr<Player> player;
     shared_ptr<Config> config;
+    shared_ptr<Policy> policy;
 
     Simulation()
     {
         config = make_shared<Config>();
+        policy = make_shared<Policy>();
         player = make_shared<Player>(config);
         player->quickReady();
         state = make_shared<State>(config);
@@ -42,6 +45,7 @@ public:
     {
         config = _config;
         player = _player;
+        policy = make_shared<Policy>();
         state = make_shared<State>(config);
     }
 
@@ -52,7 +56,7 @@ public:
         state->mana = player->maxMana();
     }
 
-    void boostrapRun()
+    void bootstrapRun()
     {
         reset();
 
@@ -94,9 +98,44 @@ public:
         }
     }
 
-    void step()
+    shared_ptr<spell::Spell> getAction(int actionId)
     {
+        shared_ptr<spell::Spell> spell(policy->action(actionId));
+        if (!spell) {
+            return nextSpell();
+        }
+        else
+            return spell;
+    }
 
+    void prepareEnvState(env::State *s)
+    {
+        s->t = state->t;
+        s->gcd = state->t_gcd - state->t;
+        s->mana = state->mana;
+        s->dmg = state->dmg;
+        s->mana_emerald = state->mana_emerald;
+        s->mana_ruby = state->mana_ruby;
+        s->duration = state->duration;
+        s->spec = player->spec;
+    }
+
+    env::State step(int actionId)
+    {
+        env::State s;
+        if (state->t >= state->duration) {
+            state->t = state->duration;
+            prepareEnvState(&s);
+            return s;
+        }
+
+        yieldCast = true;
+        cast(getAction(actionId));
+        work();
+        yieldCast = false;
+
+        prepareEnvState(&s);
+        return s;
     }
 
     SimulationsResult runMultiple(int iterations)
@@ -180,7 +219,7 @@ public:
 
     SimulationResult run()
     {
-        boostrapRun();
+        bootstrapRun();
         cast(nextSpell());
         work();
 
@@ -204,6 +243,9 @@ public:
         while (true) {
             event = queue.front();
             queue.pop_front();
+
+            if (event->type == EVENT_YIELD && yieldCast == true)
+                return;
 
             if (event->t >= state->duration) {
                 state->t = state->duration;
@@ -427,22 +469,58 @@ public:
 
         ostringstream s;
         s << std::fixed << std::setprecision(2);
-        s << "Out of mana, waiting " << t << " seconds...";
+        s << "Waiting " << t << " seconds...";
         addLog(LOG_WAIT, s.str());
+    }
+
+    void pushYield()
+    {
+        shared_ptr<Event> event(new Event());
+        event->type = EVENT_YIELD;
+        event->t = -1;
+
+        ostringstream s;
+        s << "Yielding control back.";
+        addLog(LOG_DEBUG, s.str());
+        push(event);
+    }
+
+    void castOrYield(shared_ptr<spell::Spell> spell)
+    {
+        if (yieldCast)
+            pushYield();
+        else
+            cast(spell);
+    }
+
+    void pushCastOrYield(shared_ptr<spell::Spell> spell, double t)
+    {
+        pushCast(spell, t);
+        /**
+        if (yieldCast) {
+            pushWait(t);
+        }
+        else {
+            pushCast(spell, t);
+        }
+        */
     }
 
     void cast(shared_ptr<spell::Spell> spell)
     {
+        ostringstream s;
+        s << "GCD: " << state->t_gcd - state->t;
+        addLog(LOG_DEBUG, s.str());
+
         if (canCast(spell)) {
             if (state->t_gcd > state->t) {
-                pushCast(spell, state->t_gcd - state->t);
+                pushCastOrYield(spell, state->t_gcd - state->t);
             }
             else {
                 if (!spell->proc)
                     state->t_gcd = state->t + gcd();
 
                 useCooldowns();
-
                 if (spell->channeling)
                     onCast(spell);
                 else
@@ -484,10 +562,10 @@ public:
             // Drums 1 sec cast
             if (config->drums && state->t >= config->drums_at && !state->hasCooldown(cooldown::DRUMS) && !config->drums_friend) {
                 useDrums();
-                pushCast(next, 1.0);
+                pushCastOrYield(next, 1.0);
             }
             else {
-                cast(next);
+                castOrYield(next);
             }
         }
     }
@@ -750,7 +828,7 @@ public:
             }
         }
 
-        cast(spell);
+        castOrYield(spell);
     }
 
     void onBuffGain(shared_ptr<buff::Buff> buff)

@@ -1,6 +1,7 @@
+#ifndef BUFF_H
+#define BUFF_H
 namespace buff
 {
-
     enum ID : int
     {
         ARCANE_BLAST = 30451,
@@ -54,6 +55,15 @@ namespace buff
         BURST_OF_KNOWLEDGE = 15646,
     };
 
+    typedef struct BuffStruct
+    {
+        ID id;
+        std::string name;
+        double duration;
+        int stacks = 1;
+        int max_stacks = 1;
+        bool hidden = false;
+    } BuffStruct;
 
     class Buff
     {
@@ -76,6 +86,18 @@ namespace buff
             return stacks;
         }
 
+        BuffStruct toStruct()
+        {
+            BuffStruct s;
+            s.id = id;
+            s.name = name;
+            s.duration = duration;
+            s.stacks = stacks;
+            s.max_stacks = max_stacks;
+            s.hidden = hidden;
+
+            return s;
+        }
     };
 
     class ArcaneBlast : public Buff
@@ -723,3 +745,5 @@ namespace buff
     };
 
 }
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef DEBUFF_H
+#define DEBUFF_H
+
 namespace debuff
 {
 
@@ -60,3 +63,5 @@ namespace debuff
     };
 
 }
+
+#endif

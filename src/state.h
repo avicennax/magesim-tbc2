@@ -1,3 +1,6 @@
+#ifndef STATE_H
+#define STATE_H
+
 using namespace std;
 
 class State
@@ -26,10 +29,25 @@ public:
 
     shared_ptr<Config> config;
 
+    State() {}
+
     State(shared_ptr<Config> _config)
     {
         config = _config;
         reset();
+    }
+
+    // May use later for richer gym state return.
+    map<buff::ID, buff::BuffStruct> buffMap()
+    {
+        auto newMap = map<buff::ID, buff::BuffStruct>();
+        auto it = buffs.begin();
+        while (it != buffs.end())
+        {
+            newMap[it->first] = it->second->toStruct();
+            ++it;
+        }
+        return newMap;
     }
 
     void reset()
@@ -131,3 +149,5 @@ public:
     }
 
 };
+
+#endif

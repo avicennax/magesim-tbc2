@@ -22,6 +22,8 @@
 #include "spell.h"
 #include "state.h"
 #include "player.h"
+#include "policy.h"
+#include "env.h"
 #include "simulation.h"
 #include "bindings.h"
 

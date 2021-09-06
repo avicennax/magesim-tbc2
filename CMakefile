@@ -6,18 +6,24 @@ OBJ_NAME = magesim
 
 #This is the target that compiles our executable
 main: src/main.cpp
-	$(CC) $? $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
+	$(CC) $? -o $(OBJ_NAME)
 
+.PHONY=clean
 clean:
 	rm -rf build
 
-# Compile all headers for RL
-# compile: clean
-# 	@mkdir -p build/sim
-# 	$(CC) -fPIC -c src/rl/interface.cpp -o build/sim/interface.o -I src/sim
-
+.PHONY=cython
 cython: clean
 	python setup.py install
 
-test_init:
-	python test/init_python_sim.py
+.PHONY=test_sim_run
+test_sim_run:
+	python test/scripts/test_sim_run.py
+
+.PHONY=test_env_step
+test_env_step:
+	python test/scripts/test_env_step.py
+
+.PHONY=tests
+tests:
+	pytest test/magesim

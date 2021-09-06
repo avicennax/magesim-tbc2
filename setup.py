@@ -1,4 +1,3 @@
-from Cython.Build.Dependencies import package
 from setuptools import Extension, setup
 from Cython.Build import cythonize
 
@@ -8,11 +7,13 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 VERSION = 0.1
 NAME = "magesim"
+LICENSE = "MIT"
 
 setup(
     name=NAME,
     version=VERSION,
     packages=[NAME],
+    license=LICENSE,
     package_dir={"": "src"},
     ext_modules=cythonize(
         Extension(
@@ -23,5 +24,5 @@ setup(
             extra_link_args=["-std=c++11"]
         )
     ),
-    install_requires=['gym']
+    install_requires=["gym"]
 )

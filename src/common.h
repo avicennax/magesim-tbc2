@@ -156,7 +156,8 @@ enum EventType : int
     EVENT_DRUMS,
     EVENT_INNERVATE,
     EVENT_POWER_INFUSION,
-    EVENT_WAIT
+    EVENT_WAIT,
+    EVENT_YIELD
 };
 
 enum LogType : int

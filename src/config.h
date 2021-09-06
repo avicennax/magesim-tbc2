@@ -1,3 +1,5 @@
+#ifndef CONFIG_H
+#define CONFIG_H
 struct Config
 {
 
@@ -102,3 +104,5 @@ struct Config
     double conjured_reuse_at = 0;
 
 };
+
+#endif

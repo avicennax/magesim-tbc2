@@ -5,6 +5,7 @@
     "distutils": {
         "depends": [
             "src/common.h",
+            "src/env.h",
             "src/magesim/imports.h",
             "src/simulation.h"
         ],
@@ -656,15 +657,28 @@ static CYTHON_INLINE float __PYX_NAN() {
 #define __PYX_HAVE__magesim__simulation
 #define __PYX_HAVE_API__magesim__simulation
 /* Early includes */
+#include <string.h>
+#include <string>
 #include "ios"
 #include "new"
 #include "stdexcept"
 #include "typeinfo"
-#include <memory>
-#include <string.h>
-#include <string>
+#include <utility>
+
+    #if __cplusplus > 199711L
+    #include <type_traits>
+
+    namespace cython_std {
+    template <typename T> typename std::remove_reference<T>::type&& move(T& t) noexcept { return std::move(t); }
+    template <typename T> typename std::remove_reference<T>::type&& move(T&& t) noexcept { return std::move(t); }
+    }
+
+    #endif
+    
+#include <map>
 #include "imports.h"
 #include "../common.h"
+#include "../env.h"
 #include "../simulation.h"
 #ifdef _OPENMP
 #include <omp.h>
@@ -881,16 +895,17 @@ static const char *__pyx_f[] = {
 /*--- Type declarations ---*/
 struct __pyx_obj_7magesim_10simulation_Sim;
 
-/* "magesim/simulation.pyx":7
- * from cython.operator cimport dereference as deref
+/* "magesim/simulation.pyx":6
+ * 
  * 
  * cdef class Sim:             # <<<<<<<<<<<<<<
  *     cdef Simulation sim
- * 
+ *     cdef int _seed
  */
 struct __pyx_obj_7magesim_10simulation_Sim {
   PyObject_HEAD
   Simulation sim;
+  int _seed;
 };
 
 
@@ -1152,17 +1167,21 @@ static void __Pyx_CppExn2PyErr() {
 #endif
 
 static PyObject* __pyx_convert__to_py_struct__SimulationResult(struct SimulationResult s);
+static PyObject* __pyx_convert__to_py_struct__env_3a__3a_State(struct env::State s);
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
+
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Spec(enum Spec value);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
-
-/* CIntFromPy.proto */
-static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* FastTypeChecks.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -1184,13 +1203,15 @@ static int __Pyx_check_binary_version(void);
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 
-/* Module declarations from 'libcpp' */
-
-/* Module declarations from 'libcpp.memory' */
-
 /* Module declarations from 'libc.string' */
 
 /* Module declarations from 'libcpp.string' */
+
+/* Module declarations from 'libcpp.utility' */
+
+/* Module declarations from 'libcpp.map' */
+
+/* Module declarations from 'libcpp' */
 
 /* Module declarations from 'magesim.simulation' */
 static PyTypeObject *__pyx_ptype_7magesim_10simulation_Sim = 0;
@@ -1209,17 +1230,23 @@ static const char __pyx_k_t[] = "t";
 static const char __pyx_k_Sim[] = "Sim";
 static const char __pyx_k_dmg[] = "dmg";
 static const char __pyx_k_dps[] = "dps";
+static const char __pyx_k_gcd[] = "gcd";
 static const char __pyx_k_log[] = "log";
 static const char __pyx_k_main[] = "__main__";
+static const char __pyx_k_mana[] = "mana";
 static const char __pyx_k_name[] = "__name__";
+static const char __pyx_k_spec[] = "spec";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_reduce[] = "__reduce__";
+static const char __pyx_k_duration[] = "duration";
 static const char __pyx_k_getstate[] = "__getstate__";
 static const char __pyx_k_setstate[] = "__setstate__";
 static const char __pyx_k_TypeError[] = "TypeError";
+static const char __pyx_k_mana_ruby[] = "mana_ruby";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
 static const char __pyx_k_regened_at[] = "regened_at";
 static const char __pyx_k_evocated_at[] = "evocated_at";
+static const char __pyx_k_mana_emerald[] = "mana_emerald";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
@@ -1229,10 +1256,15 @@ static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_dmg;
 static PyObject *__pyx_n_s_dps;
+static PyObject *__pyx_n_s_duration;
 static PyObject *__pyx_n_s_evocated_at;
+static PyObject *__pyx_n_s_gcd;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_n_s_log;
 static PyObject *__pyx_n_s_main;
+static PyObject *__pyx_n_s_mana;
+static PyObject *__pyx_n_s_mana_emerald;
+static PyObject *__pyx_n_s_mana_ruby;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
 static PyObject *__pyx_n_s_reduce;
@@ -1241,25 +1273,29 @@ static PyObject *__pyx_n_s_reduce_ex;
 static PyObject *__pyx_n_s_regened_at;
 static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
+static PyObject *__pyx_n_s_spec;
 static PyObject *__pyx_n_s_t;
 static PyObject *__pyx_n_s_test;
 static int __pyx_pf_7magesim_10simulation_3Sim___cinit__(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7magesim_10simulation_3Sim_2run(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7magesim_10simulation_3Sim_4print_log(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7magesim_10simulation_3Sim_6step(CYTHON_UNUSED struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7magesim_10simulation_3Sim_8__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7magesim_10simulation_3Sim_10__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_2bootstrap(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_4run(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_6step(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self, PyObject *__pyx_v_action_id); /* proto */
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_8print_log(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_10reset(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_12seed(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self, PyObject *__pyx_v__seed); /* proto */
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_14__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_16__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_7magesim_10simulation_Sim(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tuple_;
 static PyObject *__pyx_tuple__2;
 /* Late includes */
 
 /* "magesim/simulation.pyx":10
- *     cdef Simulation sim
+ *     cdef int _seed
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
  *         self.sim = Simulation()
- * 
+ *         # Same as default in config.h.
  */
 
 /* Python wrapper */
@@ -1291,8 +1327,8 @@ static int __pyx_pf_7magesim_10simulation_3Sim___cinit__(struct __pyx_obj_7mages
  * 
  *     def __cinit__(self):
  *         self.sim = Simulation()             # <<<<<<<<<<<<<<
- * 
- *     def run(self):
+ *         # Same as default in config.h.
+ *         self._seed = 0
  */
   try {
     __pyx_t_1 = Simulation();
@@ -1302,12 +1338,21 @@ static int __pyx_pf_7magesim_10simulation_3Sim___cinit__(struct __pyx_obj_7mages
   }
   __pyx_v_self->sim = __pyx_t_1;
 
+  /* "magesim/simulation.pyx":13
+ *         self.sim = Simulation()
+ *         # Same as default in config.h.
+ *         self._seed = 0             # <<<<<<<<<<<<<<
+ * 
+ *     def bootstrap(self):
+ */
+  __pyx_v_self->_seed = 0;
+
   /* "magesim/simulation.pyx":10
- *     cdef Simulation sim
+ *     cdef int _seed
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
  *         self.sim = Simulation()
- * 
+ *         # Same as default in config.h.
  */
 
   /* function exit code */
@@ -1321,8 +1366,58 @@ static int __pyx_pf_7magesim_10simulation_3Sim___cinit__(struct __pyx_obj_7mages
   return __pyx_r;
 }
 
-/* "magesim/simulation.pyx":13
- *         self.sim = Simulation()
+/* "magesim/simulation.pyx":15
+ *         self._seed = 0
+ * 
+ *     def bootstrap(self):             # <<<<<<<<<<<<<<
+ *         self.sim.bootstrapRun()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_3bootstrap(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_3bootstrap(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("bootstrap (wrapper)", 0);
+  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_2bootstrap(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_2bootstrap(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("bootstrap", 0);
+
+  /* "magesim/simulation.pyx":16
+ * 
+ *     def bootstrap(self):
+ *         self.sim.bootstrapRun()             # <<<<<<<<<<<<<<
+ * 
+ *     def run(self):
+ */
+  __pyx_v_self->sim.bootstrapRun();
+
+  /* "magesim/simulation.pyx":15
+ *         self._seed = 0
+ * 
+ *     def bootstrap(self):             # <<<<<<<<<<<<<<
+ *         self.sim.bootstrapRun()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "magesim/simulation.pyx":18
+ *         self.sim.bootstrapRun()
  * 
  *     def run(self):             # <<<<<<<<<<<<<<
  *         return self.sim.run()
@@ -1330,19 +1425,19 @@ static int __pyx_pf_7magesim_10simulation_3Sim___cinit__(struct __pyx_obj_7mages
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7magesim_10simulation_3Sim_3run(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_7magesim_10simulation_3Sim_3run(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_5run(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_5run(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("run (wrapper)", 0);
-  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_2run(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_4run(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7magesim_10simulation_3Sim_2run(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self) {
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_4run(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1351,22 +1446,22 @@ static PyObject *__pyx_pf_7magesim_10simulation_3Sim_2run(struct __pyx_obj_7mage
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("run", 0);
 
-  /* "magesim/simulation.pyx":14
+  /* "magesim/simulation.pyx":19
  * 
  *     def run(self):
  *         return self.sim.run()             # <<<<<<<<<<<<<<
  * 
- *     def print_log(self):
+ *     def step(self, action_id):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert__to_py_struct__SimulationResult(__pyx_v_self->sim.run()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 14, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert__to_py_struct__SimulationResult(__pyx_v_self->sim.run()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "magesim/simulation.pyx":13
- *         self.sim = Simulation()
+  /* "magesim/simulation.pyx":18
+ *         self.sim.bootstrapRun()
  * 
  *     def run(self):             # <<<<<<<<<<<<<<
  *         return self.sim.run()
@@ -1384,8 +1479,83 @@ static PyObject *__pyx_pf_7magesim_10simulation_3Sim_2run(struct __pyx_obj_7mage
   return __pyx_r;
 }
 
-/* "magesim/simulation.pyx":16
+/* "magesim/simulation.pyx":21
  *         return self.sim.run()
+ * 
+ *     def step(self, action_id):             # <<<<<<<<<<<<<<
+ *         s = self.sim.step(action_id)
+ *         return s
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_7step(PyObject *__pyx_v_self, PyObject *__pyx_v_action_id); /*proto*/
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_7step(PyObject *__pyx_v_self, PyObject *__pyx_v_action_id) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("step (wrapper)", 0);
+  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_6step(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self), ((PyObject *)__pyx_v_action_id));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_6step(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self, PyObject *__pyx_v_action_id) {
+  struct env::State __pyx_v_s;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("step", 0);
+
+  /* "magesim/simulation.pyx":22
+ * 
+ *     def step(self, action_id):
+ *         s = self.sim.step(action_id)             # <<<<<<<<<<<<<<
+ *         return s
+ * 
+ */
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_action_id); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 22, __pyx_L1_error)
+  __pyx_v_s = __pyx_v_self->sim.step(__pyx_t_1);
+
+  /* "magesim/simulation.pyx":23
+ *     def step(self, action_id):
+ *         s = self.sim.step(action_id)
+ *         return s             # <<<<<<<<<<<<<<
+ * 
+ *     def print_log(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_2 = __pyx_convert__to_py_struct__env_3a__3a_State(__pyx_v_s); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 23, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
+  goto __pyx_L0;
+
+  /* "magesim/simulation.pyx":21
+ *         return self.sim.run()
+ * 
+ *     def step(self, action_id):             # <<<<<<<<<<<<<<
+ *         s = self.sim.step(action_id)
+ *         return s
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_AddTraceback("magesim.simulation.Sim.step", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "magesim/simulation.pyx":25
+ *         return s
  * 
  *     def print_log(self):             # <<<<<<<<<<<<<<
  *         self.sim.printLog()
@@ -1393,34 +1563,34 @@ static PyObject *__pyx_pf_7magesim_10simulation_3Sim_2run(struct __pyx_obj_7mage
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7magesim_10simulation_3Sim_5print_log(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_7magesim_10simulation_3Sim_5print_log(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_9print_log(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_9print_log(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("print_log (wrapper)", 0);
-  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_4print_log(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_8print_log(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7magesim_10simulation_3Sim_4print_log(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self) {
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_8print_log(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("print_log", 0);
 
-  /* "magesim/simulation.pyx":17
+  /* "magesim/simulation.pyx":26
  * 
  *     def print_log(self):
  *         self.sim.printLog()             # <<<<<<<<<<<<<<
  * 
- *     def step(self):
+ *     def reset(self):
  */
   (void)(__pyx_v_self->sim.printLog());
 
-  /* "magesim/simulation.pyx":16
- *         return self.sim.run()
+  /* "magesim/simulation.pyx":25
+ *         return s
  * 
  *     def print_log(self):             # <<<<<<<<<<<<<<
  *         self.sim.printLog()
@@ -1434,33 +1604,118 @@ static PyObject *__pyx_pf_7magesim_10simulation_3Sim_4print_log(struct __pyx_obj
   return __pyx_r;
 }
 
-/* "magesim/simulation.pyx":19
+/* "magesim/simulation.pyx":28
  *         self.sim.printLog()
  * 
- *     def step(self):             # <<<<<<<<<<<<<<
- *         pass
+ *     def reset(self):             # <<<<<<<<<<<<<<
+ *         self.sim.reset()
+ * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7magesim_10simulation_3Sim_7step(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_7magesim_10simulation_3Sim_7step(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_11reset(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_11reset(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("step (wrapper)", 0);
-  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_6step(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self));
+  __Pyx_RefNannySetupContext("reset (wrapper)", 0);
+  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_10reset(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7magesim_10simulation_3Sim_6step(CYTHON_UNUSED struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self) {
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_10reset(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("step", 0);
+  __Pyx_RefNannySetupContext("reset", 0);
+
+  /* "magesim/simulation.pyx":29
+ * 
+ *     def reset(self):
+ *         self.sim.reset()             # <<<<<<<<<<<<<<
+ * 
+ *     def seed(self, _seed):
+ */
+  __pyx_v_self->sim.reset();
+
+  /* "magesim/simulation.pyx":28
+ *         self.sim.printLog()
+ * 
+ *     def reset(self):             # <<<<<<<<<<<<<<
+ *         self.sim.reset()
+ * 
+ */
 
   /* function exit code */
   __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "magesim/simulation.pyx":31
+ *         self.sim.reset()
+ * 
+ *     def seed(self, _seed):             # <<<<<<<<<<<<<<
+ *         setRNGSeed(_seed)
+ *         self._seed = _seed
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_13seed(PyObject *__pyx_v_self, PyObject *__pyx_v__seed); /*proto*/
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_13seed(PyObject *__pyx_v_self, PyObject *__pyx_v__seed) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("seed (wrapper)", 0);
+  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_12seed(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self), ((PyObject *)__pyx_v__seed));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_12seed(struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self, PyObject *__pyx_v__seed) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("seed", 0);
+
+  /* "magesim/simulation.pyx":32
+ * 
+ *     def seed(self, _seed):
+ *         setRNGSeed(_seed)             # <<<<<<<<<<<<<<
+ *         self._seed = _seed
+ */
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v__seed); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 32, __pyx_L1_error)
+  setRNGSeed(__pyx_t_1);
+
+  /* "magesim/simulation.pyx":33
+ *     def seed(self, _seed):
+ *         setRNGSeed(_seed)
+ *         self._seed = _seed             # <<<<<<<<<<<<<<
+ */
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v__seed); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 33, __pyx_L1_error)
+  __pyx_v_self->_seed = __pyx_t_1;
+
+  /* "magesim/simulation.pyx":31
+ *         self.sim.reset()
+ * 
+ *     def seed(self, _seed):             # <<<<<<<<<<<<<<
+ *         setRNGSeed(_seed)
+ *         self._seed = _seed
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("magesim.simulation.Sim.seed", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -1473,19 +1728,19 @@ static PyObject *__pyx_pf_7magesim_10simulation_3Sim_6step(CYTHON_UNUSED struct 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7magesim_10simulation_3Sim_9__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_7magesim_10simulation_3Sim_9__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_15__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_15__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_8__reduce_cython__(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_14__reduce_cython__(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7magesim_10simulation_3Sim_8__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self) {
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_14__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1530,19 +1785,19 @@ static PyObject *__pyx_pf_7magesim_10simulation_3Sim_8__reduce_cython__(CYTHON_U
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7magesim_10simulation_3Sim_11__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_7magesim_10simulation_3Sim_11__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_17__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_7magesim_10simulation_3Sim_17__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_10__setstate_cython__(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_7magesim_10simulation_3Sim_16__setstate_cython__(((struct __pyx_obj_7magesim_10simulation_Sim *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7magesim_10simulation_3Sim_10__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_7magesim_10simulation_3Sim_16__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7magesim_10simulation_Sim *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1858,11 +2113,14 @@ static void __pyx_tp_dealloc_7magesim_10simulation_Sim(PyObject *o) {
 }
 
 static PyMethodDef __pyx_methods_7magesim_10simulation_Sim[] = {
-  {"run", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_3run, METH_NOARGS, 0},
-  {"print_log", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_5print_log, METH_NOARGS, 0},
-  {"step", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_7step, METH_NOARGS, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_9__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_11__setstate_cython__, METH_O, 0},
+  {"bootstrap", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_3bootstrap, METH_NOARGS, 0},
+  {"run", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_5run, METH_NOARGS, 0},
+  {"step", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_7step, METH_O, 0},
+  {"print_log", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_9print_log, METH_NOARGS, 0},
+  {"reset", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_11reset, METH_NOARGS, 0},
+  {"seed", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_13seed, METH_O, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_15__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_7magesim_10simulation_3Sim_17__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -1986,10 +2244,15 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_dmg, __pyx_k_dmg, sizeof(__pyx_k_dmg), 0, 0, 1, 1},
   {&__pyx_n_s_dps, __pyx_k_dps, sizeof(__pyx_k_dps), 0, 0, 1, 1},
+  {&__pyx_n_s_duration, __pyx_k_duration, sizeof(__pyx_k_duration), 0, 0, 1, 1},
   {&__pyx_n_s_evocated_at, __pyx_k_evocated_at, sizeof(__pyx_k_evocated_at), 0, 0, 1, 1},
+  {&__pyx_n_s_gcd, __pyx_k_gcd, sizeof(__pyx_k_gcd), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_n_s_log, __pyx_k_log, sizeof(__pyx_k_log), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
+  {&__pyx_n_s_mana, __pyx_k_mana, sizeof(__pyx_k_mana), 0, 0, 1, 1},
+  {&__pyx_n_s_mana_emerald, __pyx_k_mana_emerald, sizeof(__pyx_k_mana_emerald), 0, 0, 1, 1},
+  {&__pyx_n_s_mana_ruby, __pyx_k_mana_ruby, sizeof(__pyx_k_mana_ruby), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
@@ -1998,6 +2261,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_regened_at, __pyx_k_regened_at, sizeof(__pyx_k_regened_at), 0, 0, 1, 1},
   {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
+  {&__pyx_n_s_spec, __pyx_k_spec, sizeof(__pyx_k_spec), 0, 0, 1, 1},
   {&__pyx_n_s_t, __pyx_k_t, sizeof(__pyx_k_t), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
@@ -2084,15 +2348,15 @@ static int __Pyx_modinit_type_init_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_7magesim_10simulation_Sim) < 0) __PYX_ERR(1, 7, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7magesim_10simulation_Sim) < 0) __PYX_ERR(1, 6, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_7magesim_10simulation_Sim.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7magesim_10simulation_Sim.tp_dictoffset && __pyx_type_7magesim_10simulation_Sim.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_7magesim_10simulation_Sim.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Sim, (PyObject *)&__pyx_type_7magesim_10simulation_Sim) < 0) __PYX_ERR(1, 7, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7magesim_10simulation_Sim) < 0) __PYX_ERR(1, 7, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Sim, (PyObject *)&__pyx_type_7magesim_10simulation_Sim) < 0) __PYX_ERR(1, 6, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7magesim_10simulation_Sim) < 0) __PYX_ERR(1, 6, __pyx_L1_error)
   __pyx_ptype_7magesim_10simulation_Sim = &__pyx_type_7magesim_10simulation_Sim;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -2328,7 +2592,7 @@ if (!__Pyx_RefNanny) {
   /* "magesim/simulation.pyx":1
  * # distutils: language = c++             # <<<<<<<<<<<<<<
  * 
- * from magesim.simulation cimport Simulation
+ * from magesim.simulation cimport Simulation, setRNGSeed
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -3124,6 +3388,62 @@ static PyObject* __pyx_convert__to_py_struct__SimulationResult(struct Simulation
   Py_DECREF(res);
   return NULL;
 }
+/* CIntFromPyVerify */
+#define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
+    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
+#define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
+    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
+#define __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, exc)\
+    {\
+        func_type value = func_value;\
+        if (sizeof(target_type) < sizeof(func_type)) {\
+            if (unlikely(value != (func_type) (target_type) value)) {\
+                func_type zero = 0;\
+                if (exc && unlikely(value == (func_type)-1 && PyErr_Occurred()))\
+                    return (target_type) -1;\
+                if (is_unsigned && unlikely(value < zero))\
+                    goto raise_neg_overflow;\
+                else\
+                    goto raise_overflow;\
+            }\
+        }\
+        return (target_type) value;\
+    }
+
+static PyObject* __pyx_convert__to_py_struct__env_3a__3a_State(struct env::State s) {
+  PyObject* res;
+  PyObject* member;
+  res = __Pyx_PyDict_NewPresized(8); if (unlikely(!res)) return NULL;
+  member = PyFloat_FromDouble(s.t); if (unlikely(!member)) goto bad;
+  if (unlikely(PyDict_SetItem(res, __pyx_n_s_t, member) < 0)) goto bad;
+  Py_DECREF(member);
+  member = PyFloat_FromDouble(s.gcd); if (unlikely(!member)) goto bad;
+  if (unlikely(PyDict_SetItem(res, __pyx_n_s_gcd, member) < 0)) goto bad;
+  Py_DECREF(member);
+  member = PyFloat_FromDouble(s.mana); if (unlikely(!member)) goto bad;
+  if (unlikely(PyDict_SetItem(res, __pyx_n_s_mana, member) < 0)) goto bad;
+  Py_DECREF(member);
+  member = PyFloat_FromDouble(s.duration); if (unlikely(!member)) goto bad;
+  if (unlikely(PyDict_SetItem(res, __pyx_n_s_duration, member) < 0)) goto bad;
+  Py_DECREF(member);
+  member = __Pyx_PyInt_From_int(s.dmg); if (unlikely(!member)) goto bad;
+  if (unlikely(PyDict_SetItem(res, __pyx_n_s_dmg, member) < 0)) goto bad;
+  Py_DECREF(member);
+  member = __Pyx_PyInt_From_int(s.mana_emerald); if (unlikely(!member)) goto bad;
+  if (unlikely(PyDict_SetItem(res, __pyx_n_s_mana_emerald, member) < 0)) goto bad;
+  Py_DECREF(member);
+  member = __Pyx_PyInt_From_int(s.mana_ruby); if (unlikely(!member)) goto bad;
+  if (unlikely(PyDict_SetItem(res, __pyx_n_s_mana_ruby, member) < 0)) goto bad;
+  Py_DECREF(member);
+  member = __Pyx_PyInt_From_enum__Spec(s.spec); if (unlikely(!member)) goto bad;
+  if (unlikely(PyDict_SetItem(res, __pyx_n_s_spec, member) < 0)) goto bad;
+  Py_DECREF(member);
+  return res;
+  bad:
+  Py_XDECREF(member);
+  Py_DECREF(res);
+  return NULL;
+}
 /* CIntToPy */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
 #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
@@ -3160,262 +3480,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
         return _PyLong_FromByteArray(bytes, sizeof(int),
                                      little, !is_unsigned);
     }
-}
-
-/* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const long neg_one = (long) -1, const_zero = (long) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(long) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(long) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(long),
-                                     little, !is_unsigned);
-    }
-}
-
-/* CIntFromPyVerify */
-#define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
-    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
-#define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
-    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
-#define __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, exc)\
-    {\
-        func_type value = func_value;\
-        if (sizeof(target_type) < sizeof(func_type)) {\
-            if (unlikely(value != (func_type) (target_type) value)) {\
-                func_type zero = 0;\
-                if (exc && unlikely(value == (func_type)-1 && PyErr_Occurred()))\
-                    return (target_type) -1;\
-                if (is_unsigned && unlikely(value < zero))\
-                    goto raise_neg_overflow;\
-                else\
-                    goto raise_overflow;\
-            }\
-        }\
-        return (target_type) value;\
-    }
-
-/* CIntFromPy */
-static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const long neg_one = (long) -1, const_zero = (long) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(long) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(long, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (long) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (long) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(long, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(long) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) >= 2 * PyLong_SHIFT) {
-                            return (long) (((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(long) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) >= 3 * PyLong_SHIFT) {
-                            return (long) (((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(long) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) >= 4 * PyLong_SHIFT) {
-                            return (long) (((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (long) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(long) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(long, unsigned long, PyLong_AsUnsignedLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(long, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-#endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (long) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(long, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(long,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(long) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                            return (long) (((long)-1)*(((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(long) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                            return (long) ((((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                            return (long) (((long)-1)*(((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(long) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                            return (long) ((((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
-                            return (long) (((long)-1)*(((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(long) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
-                            return (long) ((((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(long) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(long, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(long, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            long val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (long) -1;
-        }
-    } else {
-        long val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (long) -1;
-        val = __Pyx_PyInt_As_long(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to long");
-    return (long) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to long");
-    return (long) -1;
 }
 
 /* CIntFromPy */
@@ -3612,6 +3676,278 @@ raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to int");
     return (int) -1;
+}
+
+/* CIntToPy */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Spec(enum Spec value) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const enum Spec neg_one = (enum Spec) -1, const_zero = (enum Spec) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(enum Spec) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(enum Spec) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(enum Spec) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(enum Spec) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(enum Spec) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(enum Spec),
+                                     little, !is_unsigned);
+    }
+}
+
+/* CIntToPy */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const long neg_one = (long) -1, const_zero = (long) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(long) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(long) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(long) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(long),
+                                     little, !is_unsigned);
+    }
+}
+
+/* CIntFromPy */
+static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const long neg_one = (long) -1, const_zero = (long) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(long) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(long, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (long) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (long) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(long, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(long) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) >= 2 * PyLong_SHIFT) {
+                            return (long) (((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(long) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) >= 3 * PyLong_SHIFT) {
+                            return (long) (((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(long) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) >= 4 * PyLong_SHIFT) {
+                            return (long) (((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (long) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(long) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(long, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(long, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (long) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(long, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(long,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(long) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                            return (long) (((long)-1)*(((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(long) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                            return (long) ((((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                            return (long) (((long)-1)*(((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(long) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                            return (long) ((((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                            return (long) (((long)-1)*(((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(long) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                            return (long) ((((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(long) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(long, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(long, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            long val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (long) -1;
+        }
+    } else {
+        long val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (long) -1;
+        val = __Pyx_PyInt_As_long(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to long");
+    return (long) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to long");
+    return (long) -1;
 }
 
 /* FastTypeChecks */
