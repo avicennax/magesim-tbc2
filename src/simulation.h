@@ -58,7 +58,7 @@ public:
 
     env::State envReset()
     {
-        reset();
+        bootstrapRun();
         env::State s;
         prepareEnvState(&s);
         return s;

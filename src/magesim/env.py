@@ -49,6 +49,7 @@ class MageSimEnv(gym.Env):
     }
 
     action_space = spaces.Discrete(ACTION_SPACE_SIZE)
+
     # Consider using space.Dict -- need to determine
     # if Spinning Up algorithms will play nice.
     observation_space = spaces.Tuple(
@@ -78,6 +79,8 @@ class MageSimEnv(gym.Env):
         return tuple(r)
 
     def reset(self) -> Tuple:
+        self.dmg = 0
+        self.t = 0
         return self._get_step_response(self.sim.reset()).observation
 
     def render(self, mode='human'):
