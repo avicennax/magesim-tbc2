@@ -3,14 +3,23 @@
 
 using namespace std;
 
+
+enum ActionType
+{
+    SPELL,
+    COOLDOWN
+};
+
 class Policy
 {
 public:
     bool use_default;
+    bool wait_on_no_cast;
 
     Policy(bool inactive = false)
     {
         use_default = false;
+        wait_on_no_cast = false;
     }
 
     shared_ptr<spell::Spell> action(int spellId)

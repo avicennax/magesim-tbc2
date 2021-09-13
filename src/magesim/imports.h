@@ -14,6 +14,7 @@
 #include <sstream>
 #include <iomanip>
 
+#include "../utils.h"
 #include "../common.h"
 #include "../config.h"
 #include "../stats.h"

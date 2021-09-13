@@ -24,6 +24,12 @@ class Simulation
 
 public:
     bool logging = true;
+    /**
+     * yieldCast is used to pause the simulation and yield control
+     * back to user to determine the next action to be taken. If
+     * false then the simulation runs using the default policy
+     * (which depends on config).
+     */
     bool yieldCast = false; // RL
     list<shared_ptr<Event>> queue;
     vector<shared_ptr<LogEntry>> log;
@@ -56,6 +62,13 @@ public:
         state->mana = player->maxMana();
     }
 
+    /**
+     * This called by Cython wrapper class to prepare the simulation
+     * for another run. The wrapper instance is intended to be used
+     * by a gym.Env environment. 
+     * 
+     * @return env::State 
+     */
     env::State envReset()
     {
         bootstrapRun();
@@ -503,14 +516,6 @@ public:
     void pushCastOrYield(shared_ptr<spell::Spell> spell, double t)
     {
         pushCast(spell, t);
-        /**
-        if (yieldCast) {
-            pushWait(t);
-        }
-        else {
-            pushCast(spell, t);
-        }
-        */
     }
 
     void cast(shared_ptr<spell::Spell> spell)
