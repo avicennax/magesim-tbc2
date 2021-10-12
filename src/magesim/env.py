@@ -109,4 +109,4 @@ class MageSimEnv(gym.Env):
         done = self._terminal(state_dict)
         observation = tuple(state_dict.values())
 
-        return self.StepResponse(observation, reward, done, {})
+        return self.StepResponse(observation, reward, done, {"duration": state_dict["duration"]})
